@@ -14,33 +14,33 @@ Machine_Learning_Challenge/
 │   ├── validation-predictions-template.csv # Template for the submission file
 │   └── december-chart-inputs.csv           # Fixed inputs for December 2025 forecast
 ├── src/
-│   ├── compare_models.py   # Baseline model comparison (months 1–9 train / month 10 eval)
-│   ├── grid_search.py      # Hyperparameter grid search for HistGradientBoosting
-│   ├── train_predict.py    # Final model training + validation & December predictions
-│   └── score.py            # Output validator and December chart generator
+│   ├── benchmark_models.py   # Baseline model comparison (months 1–9 train / month 10 eval)
+│   ├── model_optimization.py # Hyperparameter grid search for HistGradientBoosting
+│   ├── model_training.py     # Final model training + validation & December predictions
+│   └── score.py              # Output validator and December chart generator
 ├── scorer_results/
-│   ├── tuning_results.csv      # Grid search results for all configurations
-│   └── candidate_december.png  # December 2025 predicted rate chart
-├── EDA.ipynb           # Exploratory data analysis notebook
-├── runner.py           # Single entry point to run the full pipeline
-└── requirements.txt    # Python dependencies
+│   ├── hyperparameter_search_results.csv  # Grid search results for all configurations
+│   └── candidate_december.png             # December 2025 predicted rate chart
+├── EDA.ipynb              # Exploratory data analysis notebook
+├── pipeline_runner.py     # Single entry point to run the full pipeline
+└── requirements.txt       # Python dependencies
 ```
 
 ---
 
 ## Pipeline Overview
 
-The full pipeline runs in three sequential steps, all orchestrated by `runner.py`:
+The full pipeline runs in three sequential steps, all orchestrated by `pipeline_runner.py`:
 
 ```
-compare_models.py  →  grid_search.py  →  train_predict.py
+benchmark_models.py  →  model_optimization.py  →  model_training.py
 ```
 
-1. **`compare_models.py`** — Evaluates four baseline models on a time-based split (months 1–9 for training, month 10 for validation): Linear Regression (normal and log target), Random Forest, and HistGradientBoosting.
+1. **`benchmark_models.py`** — Evaluates four baseline models on a time-based split (months 1–9 for training, month 10 for validation): Linear Regression (normal and log target), Random Forest, and HistGradientBoosting.
 
-2. **`grid_search.py`** — Runs a 40-configuration grid search over `HistGradientBoostingRegressor` hyperparameters (`learning_rate`, `max_iter`, `target_log`). Results are saved to `scorer_results/tuning_results.csv`.
+2. **`model_optimization.py`** — Runs a 40-configuration grid search over `HistGradientBoostingRegressor` hyperparameters (`learning_rate`, `max_iter`, `target_log`). Results are saved to `scorer_results/hyperparameter_search_results.csv`.
 
-3. **`train_predict.py`** — Trains the final model on the full dataset using the best hyperparameters, then generates:
+3. **`model_training.py`** — Trains the final model on the full dataset using the best hyperparameters, then generates:
    - `validation_predictions.csv` — predictions for the validation set
    - Updated `december-chart-inputs.csv` — daily rate predictions for December 2025
 
@@ -93,17 +93,17 @@ Outliers with a rate-per-mile outside `[0.5, 10.0]` are removed before training.
 From the project root:
 
 ```bash
-python runner.py
+python pipeline_runner.py
 ```
 
-This runs `compare_models.py`, then `grid_search.py`, then `train_predict.py` in sequence.
+This runs `benchmark_models.py`, then `model_optimization.py`, then `model_training.py` in sequence.
 
 ### Run individual steps
 
 ```bash
-python src/compare_models.py   # Baseline model comparison
-python src/grid_search.py      # Hyperparameter tuning
-python src/train_predict.py    # Final training & prediction
+python src/benchmark_models.py    # Baseline model comparison
+python src/model_optimization.py  # Hyperparameter tuning
+python src/model_training.py      # Final training & prediction
 ```
 
 ### Validate outputs and generate chart

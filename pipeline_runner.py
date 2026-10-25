@@ -17,9 +17,9 @@ def run_script(script_name, *args):
 
 
 def main():
-    run_script("src/compare_models.py")
-    run_script("src/grid_search.py")
-    run_script("src/train_predict.py")
+    run_script("src/benchmark_models.py")
+    run_script("src/model_optimization.py")
+    run_script("src/model_training.py")
 
 
 if __name__ == "__main__":

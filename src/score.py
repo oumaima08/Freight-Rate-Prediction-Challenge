@@ -119,7 +119,7 @@ def save_december_chart(december: pd.DataFrame, output: Path) -> None:
         color=color,
         alpha=0.08,
     )
-    axis.set_title("Candidate: December 2025 Predicted Freight Rate", loc="left", fontsize=15, fontweight="bold", pad=12)
+    axis.set_title("Candidate: December 2025 Predicted Load Rate", loc="left", fontsize=15, fontweight="bold", pad=12)
     axis.set_ylabel("Predicted rate ($)")
     axis.grid(axis="y", color="#D9E2E4", linewidth=0.8)
     axis.spines[["top", "right"]].set_visible(False)

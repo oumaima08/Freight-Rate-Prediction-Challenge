@@ -8,7 +8,7 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import ParameterGrid
 
 # Same folder (src/), so this import works when running `python src/grid_search.py`
-from compare_models import prepare_split
+from benchmark_models import prepare_split
 
 SCORER_DIR = Path("scorer_results")
 
@@ -64,7 +64,7 @@ def main():
     df_results = pd.DataFrame(results)[columns]
 
     SCORER_DIR.mkdir(parents=True, exist_ok=True)
-    out_path = SCORER_DIR / "tuning_results.csv"
+    out_path = SCORER_DIR / "hyperparameter_search_results.csv"
     df_results.to_csv(out_path, index=False)
     print(f"\nTuning complete. Results stored in {out_path}")
 
